@@ -40,11 +40,17 @@ void testMess(void);
 // クラス定義
 class BitMapProcessor{
 	FILE *bmp;  // ファイルポインタ
-	uint8_t *img;  // 作業用ビットマップデータ
-	uint8_t *org;  // 復元用ビットマップデータ
+	std::vector<uint8_t> img;  // 作業用ビットマップデータ
+	std::vector<uint8_t> org;  // 復元用ビットマップデータ
 	FileHeader fHeader;  // ファイルヘッダ
 	InfoHeader iHeader;  // 情報ヘッダ
 	
+	public:
+		BitMapProcessor(){
+			bmp = NULL;
+			img.clear();
+			org.clear();
+		}
 }
 
 // 関数群
