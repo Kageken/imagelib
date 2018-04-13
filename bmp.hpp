@@ -46,7 +46,7 @@ class BitMapProcessor{
 	InfoHeader iHeader;  // 情報ヘッダ
 	
 	public:
-		BitMapProcessor(){
+		BitMapProcessor(){  // コンストラクタ
 			bmp = NULL;
 			img.clear();
 			org.clear();
