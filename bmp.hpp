@@ -1,9 +1,6 @@
 #include<iostream>
-#include<fstream>
 #include<cstdio>
 #include<cstring>
-#include<cmath>
-#include<vector>
 
 // マクロ
 #define FILE_HEADER_SIZE 14
@@ -11,7 +8,7 @@
 
 // 構造体宣言
 typedef struct FileHeader{  // ファイルヘッダ構造体
-	std::vector<uint8_t> data;  // 仮データ置き場
+	uint8_t data[FILE_HEADER_SIZE];  // 仮データ置き場
 	string fileType;  // ファイルタイプ
 	int fileSize;  // ファイルサイズ
 	int reserve1, reserve2;  // 予約領域
@@ -19,7 +16,7 @@ typedef struct FileHeader{  // ファイルヘッダ構造体
 }FileHeader;
 
 typedef struct InfoHeader{  // 情報ヘッダ構造体
-	std::vector<uint8_t> data;  // 仮データ置き場
+	uint8_t data[INFO_HEADER_SIZE];  // 仮データ置き場
 	int infoHeaderSize;  // 情報ヘッダサイズ
 	int width, height;  // 画像の幅，高さ
 	int plain;  // プレーン数
@@ -41,26 +38,23 @@ void testMess(void);
 
 // クラス定義
 class BitMapProcessor{
-	std::ifstream bmp;  // 入力ファイルデータ
-	std::vector<uint8_t> img;  // 作業用ビットマップデータ
-	std::vector<uint8_t> org;  // 復元用ビットマップデータ
+	FILE *bmp;  // ファイルポインタ
+	uint8_t *img;  // 作業用ビットマップデータ
+	uint8_t *org;  // 復元用ビットマップデータ
 	FileHeader fHeader;  // ファイルヘッダ
 	InfoHeader iHeader;  // 情報ヘッダ
 	
 	public:
 		BitMapProcessor(){  // コンストラクタ
-			img.clear();
-			img.shrink_to_fit();
-			org.clear();
-			org.shrink_to_fit();
+			bmp = NULL;
+			img = NULL;
+			org = NULL;
 		}
 
 		~BitMapProcessor(){  // デストラクタ
-			bmp.close();
-			img.clear();
-			img.shrink_to_fit();
-			org.clear();
-			org.shrink_to_fit();
+			fclose(bmp);
+			delete []img;
+			delete []org;
 		}
 
 		void loadData(string filename);  // ファイルのロード
@@ -99,9 +93,12 @@ void BitMapProcessor::loadData(string filename){  // ファイル読み込み
 	readBmpData();
 }
 
-void BitMapProcessor::readFileHeader(){
-	std::vector<uint8_t> data;
-	data.resize(FILE_HEADER_SIZE);
+void BitMapProcessor::readFileHeader(){  // ファイルヘッダ読み込み
+	uint8_t data[FILE_HEADER_SIZE];
+	size_t size = fread(data, sizeof(uint8_t), FILE_HEADER_SIZE, bmp);
+
+	memcpy(iHeader.data, data, sizeof(data));
+	iHeader.infoHeaderSize = bitToInteger(data[0], data[1], data[2], data[3]);
 }
 
 void testMess(void){  // テスト用
