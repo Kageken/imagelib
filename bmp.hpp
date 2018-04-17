@@ -1,6 +1,8 @@
 #include<iostream>
+#include<fstream>
 #include<cstdio>
 #include<cstring>
+#include<cmath>
 #include<vector>
 
 // マクロ
@@ -39,7 +41,7 @@ void testMess(void);
 
 // クラス定義
 class BitMapProcessor{
-	FILE *bmp;  // ファイルポインタ
+	std::ifstream bmp;  // 入力ファイルデータ
 	std::vector<uint8_t> img;  // 作業用ビットマップデータ
 	std::vector<uint8_t> org;  // 復元用ビットマップデータ
 	FileHeader fHeader;  // ファイルヘッダ
@@ -47,7 +49,6 @@ class BitMapProcessor{
 	
 	public:
 		BitMapProcessor(){  // コンストラクタ
-			bmp = NULL;
 			img.clear();
 			img.shrink_to_fit();
 			org.clear();
@@ -55,7 +56,7 @@ class BitMapProcessor{
 		}
 
 		~BitMapProcessor(){  // デストラクタ
-			fclose(bmp);
+			bmp.close();
 			img.clear();
 			img.shrink_to_fit();
 			org.clear();
