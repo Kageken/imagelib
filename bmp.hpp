@@ -85,7 +85,7 @@ inline int bitToInteger(uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4){  // 4bi
 		   b4 * 256 * 256 * 256;
 }
 
-void BitMapProcessor::loadData(string filename){
+void BitMapProcessor::loadData(string filename){  // ファイル読み込み
 	if(bmp != NULL){
 		fclose(bmp);
 	}
@@ -96,6 +96,11 @@ void BitMapProcessor::loadData(string filename){
 	readFileHeader();
 	readInfoHeader();
 	readBmpData();
+}
+
+void BitMapProcessor::readFileHeader(){
+	std::vector<uint8_t> data;
+	data.resize(FILE_HEADER_SIZE);
 }
 
 void testMess(void){  // テスト用
