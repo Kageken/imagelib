@@ -78,6 +78,26 @@ class BitMapProcessor{
 }
 
 // 関数群
-void testMess(void){
+inline int bitToInteger(uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4){  // 4bit情報を整数値に変換
+	return b1 +
+		   b2 * 256 +
+		   b3 * 256 * 256 +
+		   b4 * 256 * 256 * 256;
+}
+
+void BitMapProcessor::loadData(string filename){
+	if(bmp != NULL){
+		fclose(bmp);
+	}
+	bmp = fopen(filename.c_str(), "rb");
+	if(bmp == NULL){
+		std::cout << "ファイルオープンに失敗しました" << std::endl;
+	}
+	readFileHeader();
+	readInfoHeader();
+	readBmpData();
+}
+
+void testMess(void){  // テスト用
 	std::cout << "<<this is bmp.hpp>>" << std::endl;
 }
