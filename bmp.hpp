@@ -49,8 +49,32 @@ class BitMapProcessor{
 		BitMapProcessor(){  // コンストラクタ
 			bmp = NULL;
 			img.clear();
+			img.shrink_to_fit();
 			org.clear();
+			org.shrink_to_fit();
 		}
+
+		~BitMapProcessor(){  // デストラクタ
+			fclose(bmp);
+			img.clear();
+			img.shrink_to_fit();
+			org.clear();
+			org.shrink_to_fit();
+		}
+
+		void loadData(string filename);  // ファイルのロード
+		void dispBmpInfo();  // 画像情報の表示
+		void writeData();  // データの書き込み
+		Color getColor(int row, int col);  // 色の取得
+		void setColor(int row, int col, Color clr);  // 色をセット
+		void restore();  // データを編集前へ復元
+		int height();  // 画像高を取得
+		int width();  // 画像幅を取得
+
+	private:
+		void readFileHeader();  // ファイルヘッダを読み込み
+		void readInfoHeader();  // 情報ヘッダを読み込み
+		void readBmpData();  // 画像データを読み込み
 }
 
 // 関数群
