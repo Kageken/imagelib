@@ -171,6 +171,14 @@ void BitMapProcessor::restore(){  // データを加工前に
 	memcpy(img, org, iHeader.dataSize);
 }
 
+inline int BitMapProcessor::width(){
+	return iHeader.width;
+}
+
+inline int BitMapProcessor::height(){
+	return iHeader.height;
+}
+
 void BitMapProcessor::readFileHeader(){  // ファイルヘッダ読み込み
 	uint8_t data[FILE_HEADER_SIZE];
 	size_t size = fread(data, sizeof(uint8_t), FILE_HEADER_SIZE, bmp);
